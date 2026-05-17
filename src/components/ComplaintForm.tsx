@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, X, CheckCircle } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { useAuth } from '../context/AuthContext';
 import { ComplaintFormData, ComplaintCategory, ComplaintPriority, Coordinates } from '../types';
 import { CATEGORIES, PRIORITIES, CATEGORY_ICONS } from '../utils/constants';
 
@@ -10,6 +11,7 @@ interface Props {
 
 const ComplaintForm: React.FC<Props> = ({ initialCoordinates }) => {
   const { submitComplaint, toggleForm, theme } = useApp();
+  const { user } = useAuth();
   const [submitted, setSubmitted] = useState(false);
   const [locating, setLocating] = useState(false);
 
@@ -50,7 +52,7 @@ const ComplaintForm: React.FC<Props> = ({ initialCoordinates }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!isValid) return;
-    submitComplaint(form);
+    submitComplaint(form, user?.id ?? 'guest', user?.name ?? 'You');
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);

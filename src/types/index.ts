@@ -59,6 +59,20 @@ export interface ComplaintFormData {
 
 // ─── App View ─────────────────────────────────────────────────────────────────
 
-export type AppView = 'map' | 'list';
+export type AppView = 'map' | 'list' | 'dashboard';
 
 export type Theme = 'dark' | 'light';
+
+// ─── Auth & User ──────────────────────────────────────────────────────────────
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  phone?: string;
+  area?: string;   // local area / ward
+  avatar?: string; // initials fallback
+  createdAt: string;
+}
+
+export type AppPage = 'home' | 'login' | 'signup' | 'dashboard';

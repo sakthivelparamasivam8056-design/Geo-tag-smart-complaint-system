@@ -111,7 +111,7 @@ function appReducer(state: AppState, action: Action): AppState {
 // ─── Context ──────────────────────────────────────────────────────────────────
 
 interface AppContextValue extends AppState {
-  submitComplaint: (data: ComplaintFormData) => void;
+  submitComplaint: (data: ComplaintFormData, userId?: string, userName?: string) => void;
   upvoteComplaint: (id: string) => void;
   updateStatus: (id: string, status: Complaint['status']) => void;
   setFilters: (filters: Partial<FilterState>) => void;
@@ -205,7 +205,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   // ── Actions ───────────────────────────────────────────────────────────────
 
-  const submitComplaint = useCallback((data: ComplaintFormData) => {
+  const submitComplaint = useCallback((data: ComplaintFormData, userId = 'guest', userName = 'You') => {
     if (!data.coordinates) return;
     const newComplaint: Complaint = {
       id: uuidv4(),
@@ -218,8 +218,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       address: data.address,
       timestamp: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      userId: 'guest',
-      userName: 'You',
+      userId,
+      userName,
       upvotes: 0,
     };
     dispatch({ type: 'ADD_COMPLAINT', payload: newComplaint });
